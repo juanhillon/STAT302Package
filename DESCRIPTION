@@ -5,8 +5,7 @@ Authors@R:
     person(given = "Juan",
            family = "Hillon",
            role = c("aut", "cre"),
-           email = "jhillon@uw.edu",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+           email = "jhillon@uw.edu")
 Description: Demonstrates package building.
 License: GPL-3
 Encoding: UTF-8
