@@ -1,6 +1,6 @@
 #' Random forest cross validation functions
 #'
-#' This funnction predicts output with cv error based on the number of folds,
+#' This function predicts output with cv error based on the number of folds,
 #'   this function works with \code{my_penguins}.
 #'
 #' @param k Numeric nunmber of folds.
@@ -17,13 +17,13 @@
 #' @export
 my_rf_cv <- function(k){
   #removes nas from my_penguins
-  my_data <- data(my_penguins, envir = environment())
-  my_data <- as.matrix(na.omit(my_data))
+  my_penguins <- data(my_penguins, envir = environment())
+  my_data <- na.omit(my_penguins)
   #creates vector to store cross validation errors
   cv_errors_2 <- rep(NA, k)
   #gives each observation a fold
-  my_data$fold <- sample(rep(1:k, length = nrow(my_data)))
-  fold <- my_data$fold
+  fold <- sample(rep(1:k, length = nrow(my_data)))
+  my_data$fold <- fold
   for (i in 1:k) {
     #creates training data out of data not in ith fold
     data_train <- my_data %>% filter(fold != i)

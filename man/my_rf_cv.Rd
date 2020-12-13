@@ -13,7 +13,7 @@ my_rf_cv(k)
 A numeric with the cross validation error.
 }
 \description{
-This funnction predicts output with cv error based on the number of folds,
+This function predicts output with cv error based on the number of folds,
 this function works with \code{my_penguins}.
 }
 \keyword{prediction}

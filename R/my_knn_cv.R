@@ -8,7 +8,7 @@
 #' @param k_cv Integer representing the number of folds.
 #' @keywords prediction
 #'
-#' @return A list containing a vector of the predicted clas \code{class} and
+#' @return A list containing a vector of the predicted class \code{class} and
 #'   a numeric with the cross-validation misclassification error, \code{cv_err}.
 #'
 #'
