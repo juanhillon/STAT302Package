@@ -16,9 +16,6 @@
 #'
 #' @export
 my_rf_cv <- function(k){
-  #removes nas from my_penguins
-  my_penguins <- data(my_penguins, envir = environment())
-  my_data <- na.omit(my_penguins)
   #creates vector to store cross validation errors
   cv_errors_2 <- rep(NA, k)
   #gives each observation a fold
@@ -26,8 +23,8 @@ my_rf_cv <- function(k){
   my_data$fold <- fold
   for (i in 1:k) {
     #creates training data out of data not in ith fold
-    data_train <- my_data %>% filter(fold != i)
-    data_test <- my_data %>% filter(fold == i)
+    data_train <- my_data %>% dplyr::filter(fold != i)
+    data_test <- my_data %>% dplyr::filter(fold == i)
     #creates model with randomForest()
     my_model <- randomForest(
       body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_mm,
