@@ -34,8 +34,17 @@ my_lm <- function(formula, data){
   df <- nrow(data) - ncol(model_frame)
   #calculates sigma^2
   sigma_2 <- sum(((y - x %*% beta) ^ 2) / df)
-  #calculates standard error
-  std_error <- diag(sqrt(sigma_2 * solve((t(x) %*% x))))
+  #sets negative values in matrix to zero
+  my_solve <- sigma_2 * solve((t(x) %*% x))
+  for (i in 1:nrow(my_solve)) {
+    for(j in 1:ncol(my_solve)){
+      if(my_solve[i, j ] < 0){
+        my_solve[i,j] = 0
+      }
+    }
+  }
+  #calculates std error
+  std_error <- diag(sqrt(my_solve))
   #calculates t values
   t_val <- beta / std_error
   #Calculates Pr(>|t|)
