@@ -21,7 +21,7 @@ The vignette demonstrates example usage of all main functions.  You can see the 
 # install.packages("devtools")
 devtools::install_github("juanhillon/STAT302Package", build_vignette = TRUE, build_opts = c())
 library(STAT302Package)
-# Use this to view the vignette in the corncob HTML help
+# Use this to view the vignette in the STAT302Package HTML help
 help(package = "STAT302Package", help_type = "html")
 # Use this to view the vignette as an isolated HTML file
 utils::browseVignettes(package = "STAT302Package")

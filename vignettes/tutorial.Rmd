@@ -30,3 +30,40 @@ To install and load STAT302Package, use the following code:
 devtools::install_github("juanhillon/STAT302Package")
 library(STAT302Package)
 ```
+
+## Tutorial for `my_t.test`
+To explain how to use `my_t.test`, I will be demonstrating three t-tests with a p-value cut-off of 0.05 using the `lifeExp` data from `my_gapminder` and explaining the results. This function returns a list with four elements. The first item represents the test statistic, which is equal to `(mean(x) - mu) / std_error`. The second item represent the degrees of freedom used in calculating the p-value, which is equal to `length(x) -` `. The third item returns the type of alternative test the user specified. The fourth item is the p-value of null hypothesis test.
+
+The first t-test I will demonstrate is:
+  \begin{align}
+  H_0: \mu &= 60,\\
+  H_a: \mu &\neq 60.
+  \end{align}
+This is an example of a two-sided t-test, with `mu` being equal to 60. The null hypothesis is that `mu` equals 60, and the alternative hypothesis is that mu is not equal to 60. Therefore we set up a `my_t.test` function that looks like this:
+```{r}
+my_t.test(x = my_gapminder$lifeExp, alternative = "two.sided", mu = 60)
+```
+This gives us a p-value of `r my_t.test(x = my_gapminder$lifeExp, alternative = "two.sided", mu = 60)[4]`. This is greater than the cut-off of 0.05, so we do not reject the null hypothesis.
+
+
+The second t-test I will demonstrate is:
+  \begin{align}
+  H_0: \mu &= 60,\\
+  H_a: \mu &< 60.
+  \end{align}
+This is an example of a t-test where the alternative is less than `mu`, with `mu` being equal to 60. The null hypothesis is that `mu` equals 60, and the alternative hypothesis is that mu is less than 60. Therefore we set up a `my_t.test` function that looks like this:
+```{r}
+my_t.test(x = my_gapminder$lifeExp, alternative = "less", mu = 60)
+```
+This gives us a p-value of `r my_t.test(x = my_gapminder$lifeExp, alternative = "less", mu = 60)[4]`. This is less than the cut-off of 0.05, so we reject the null hypothesis.
+
+The third t-test I will demonstrate is:
+  \begin{align}
+  H_0: \mu &= 60,\\
+  H_a: \mu &> 60.
+  \end{align}
+This is an example of a t-test where the alternative is greater than `mu`, with `mu` being equal to 60. The null hypothesis is that `mu` equals 60, and the alternative hypothesis is that mu is greater than 60. Therefore we set up a `my_t.test` function that looks like this:
+```{r}
+my_t.test(x = my_gapminder$lifeExp, alternative = "greater", mu = 60)
+```
+This gives us a p-value of `r my_t.test(x = my_gapminder$lifeExp, alternative = "greater", mu = 60)[4]`. This is greater than the cut-off of 0.05, so we do not reject the null hypothesis.
