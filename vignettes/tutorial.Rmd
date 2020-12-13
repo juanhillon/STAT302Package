@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(STAT302Package)
 library(ggplot2)
+library(kableExtra)
 data("my_gapminder")
 data("my_penguins")
 ```
@@ -101,3 +102,33 @@ ggplot(my_df, aes(x = fitted, y = actual)) +
 ```
 
 As we can see in the graph, the model fit is relatively accurate, however, many of the actual values are incorrectly fitted into certain clusters. However, with higher values, the trend is very accurate, except for the few outliers the fitted model throws out.
+
+## Tutorial for `my_knn_cv`
+This function predicts the output class of a given dataset, using k-nearest-neighbor cross-validation. It also returns the cross-validation misclassification error, which is the proportion of output classes that were misclassified. What cross-validation does is split the data into `k_cv` folds, use all but one fold as the training data, fit the model, and use the unused fold as test data to make predictions. It then repeats this process for each fold until each fold has been used as the test data. Cross validation is useful because it allows the whole data to be used as training data, while still being able to calculate testing error. It only requires one dataset. 
+
+This is an example using the `my_penguins` dataset, predicting output class `species` using covariates `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm`, and `body_mass_g`. We will use 5 folds (`k_cv = 5`), and iterate for every value of `k_nn` between 1 and 10. We need to be sure to remove all na values and unnecessary covariates too.
+
+```{r}
+#removes observations with na values
+train <- na.omit(my_penguins)
+#removes unnecessary columns from dataset
+train$island <- NULL
+train$sex <- NULL
+train$year <- NULL
+#creates vectors to store training and cv misclassification errors
+train_err <- rep(NA, 10)
+cv_misclass_err <- rep(NA, 10)
+#tests function, iterating with k_nn values from 1 to 10
+for (i in 1:10) {
+  knn_i <- my_knn_cv(train, cl, i, 5)
+  cv_misclass_err[i] <- knn_i$cv_err
+  #calculates training error
+  train_err[i] <- mean((knn_i$class - as.numeric(train$species))^2)
+}
+my_df <- data.frame("k_nn" = c(1:10),
+          "CV Misclassification Error" = cv_misclass_err,
+          "Training Error" = train_err)
+kable_styling(kable(my_df))
+```
+Based on the CV Misclassification error, I would chooose a model with `k_nn == 1`. I would do the same based on training error. Therefore I would most likely choose that model in practice because it has the lowest training and testing error.
+
