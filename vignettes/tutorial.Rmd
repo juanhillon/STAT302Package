@@ -15,8 +15,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup, echo=FALSE}
+```{r setup}
 library(STAT302Package)
+library(ggplot2)
 data("my_gapminder")
 data("my_penguins")
 ```
@@ -67,3 +68,36 @@ This is an example of a t-test where the alternative is greater than `mu`, with 
 my_t.test(x = my_gapminder$lifeExp, alternative = "greater", mu = 60)
 ```
 This gives us a p-value of `r my_t.test(x = my_gapminder$lifeExp, alternative = "greater", mu = 60)[4]`. This is greater than the cut-off of 0.05, so we do not reject the null hypothesis.
+
+## Tutorial for `my_lm`
+This function produces a table with rows for each coefficient (beta), and columns for the estimates of all the coefficients, their standard error, the t value calculated by dividing the coefficient by the standard error, and `Pr(>|t|)`, which represents the probablity of the null hypothesis being true. The null hypothesis is that the coefficient is equal to zero.
+
+An example regression, using `lifeExp` as the response variable, and `gdpPercap` and `continent` as explanatory variables:
+```{r, warning=FALSE}
+my_lm(lifeExp ~ gdpPercap + continent, my_gapminder)
+```
+
+The `gdpPercap` coefficient respresents the significance of `gdpPercap` as a covariate. A value of 0.0004453 indicates that the response differs by that amount for each increase of one unit of gdpPercap. The low value of the coefficient is probably because `gdpPercap` generally has values of several thousand, while continent is a four level factor.
+
+The hypothesis test uses a t-value of 18.96606, which is calculated by dividing the estimate by the standard error. The hypothesis test is as follows:
+  \begin{align}
+  H_0: \beta &= 0,\\
+  H_a: \beta &\neq 0.
+  \end{align}
+As we can see from `Pr(>|t|)` being zero, there is no probability of the null hypothesis being true, since there is zero probability of observing an absolute t value greater than the observed t value. Therefore, we reject the null hypothesis of the coefficient being equal to zero. 
+
+Now we are going to compare the actual vs. fitted values:
+```{r, warning=FALSE}
+#Creates data frame of actual and fitted values
+mod_fits <- fitted(lm(lifeExp ~ gdpPercap + continent, my_gapminder))
+my_df <- data.frame(actual = my_gapminder$lifeExp, fitted = mod_fits)
+#Plots actual vs. fitted graph
+ggplot(my_df, aes(x = fitted, y = actual)) +
+  geom_point() +
+  geom_abline(slope = 1, intercept = 0, col = "red", lty = 2) + 
+  theme_bw(base_size = 10) +
+  labs(x = "Fitted values", y = "Actual values", title = "Actual vs. Fitted") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+As we can see in the graph, the model fit is relatively accurate, however, many of the actual values are incorrectly fitted into certain clusters. However, with higher values, the trend is very accurate, except for the few outliers the fitted model throws out.
