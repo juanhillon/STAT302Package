@@ -115,6 +115,7 @@ train <- na.omit(my_penguins)
 train$island <- NULL
 train$sex <- NULL
 train$year <- NULL
+cl <- train$species
 #creates vectors to store training and cv misclassification errors
 train_err <- rep(NA, 10)
 cv_misclass_err <- rep(NA, 10)
@@ -131,4 +132,11 @@ my_df <- data.frame("k_nn" = c(1:10),
 kable_styling(kable(my_df))
 ```
 Based on the CV Misclassification error, I would chooose a model with `k_nn == 1`. I would do the same based on training error. Therefore I would most likely choose that model in practice because it has the lowest training and testing error.
+
+```{r, eval=FALSE}
+library(tidyr)
+data(my_penguins) 
+my_penguins <- drop_na(my_penguins)
+my_rf_cv(2)
+```
 

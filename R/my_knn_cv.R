@@ -51,7 +51,7 @@ my_knn_cv <- function(train, cl, k_nn, k_cv){
     }
     #calculates misclassification rate
     misclass_rate[i] <- sum(na.omit(as.numeric(error[train$fold == i])))
-    misclass_rate[i] <- misclass_rate[i] / length(cl_test)
+    misclass_rate[i] <- misclass_rate[i] / length(cl)
   }
   #calculates mean misclassification rate
   cv_err <- mean(misclass_rate)
