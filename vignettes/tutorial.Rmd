@@ -15,8 +15,18 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, echo=FALSE}
 library(STAT302Package)
+data("my_gapminder")
+data("my_penguins")
 ```
 
-##Introduction
+## Introduction
+This package demonstrates package building, using functions from previous labs. 
+These functions are `my_t.test`, a t test function, `my_lm`, a linear model function, `my_knn_cv`, a k-nearest neighbors cross-validation function, and `my_rf_cv`, a rondom forest cross-validation function. I will be using the datasets `my_penguins` and `my_gapminder` to demonstrate these functions.
+
+To install and load STAT302Package, use the following code:
+```{r, eval=FALSE}
+devtools::install_github("juanhillon/STAT302Package")
+library(STAT302Package)
+```
