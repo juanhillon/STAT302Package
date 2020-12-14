@@ -41,7 +41,7 @@ my_knn_cv <- function(train, cl, k_nn, k_cv){
                                   test_data,
                                   cl_train,
                                   k = k_nn,
-                                  prob = TRUE)
+                                  prob = FALSE)
     #creates vector to store misclassifications
     error <- rep(NA, nrow(test_data))
     #labels misclassifications
@@ -51,14 +51,18 @@ my_knn_cv <- function(train, cl, k_nn, k_cv){
     }
     #calculates misclassification rate
     misclass_rate[i] <- sum(na.omit(as.numeric(error[train$fold == i])))
-    misclass_rate[i] <- misclass_rate[i] / length(cl)
+    misclass_rate[i] <- misclass_rate[i] / length(cl_test)
   }
   #calculates mean misclassification rate
   cv_err <- mean(misclass_rate)
+  #converts species to numeric
+  train$species <- as.numeric(train$species)
+  #generates output class
+  output_class <- knn(train, train, train$species, k = k_nn, prob = FALSE)
   #creates list of objects to return
   my_list <- list()
   my_list$cv_err <- cv_err
-  my_list$class <- class
+  my_list$class <- output_class
   #returns list
   return(my_list)
 }

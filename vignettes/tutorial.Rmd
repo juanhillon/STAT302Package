@@ -124,7 +124,7 @@ for (i in 1:10) {
   knn_i <- my_knn_cv(train, cl, i, 5)
   cv_misclass_err[i] <- knn_i$cv_err
   #calculates training error
-  train_err[i] <- mean((knn_i$class - as.numeric(train$species))^2)
+  train_err[i] <- mean((as.numeric(knn_i$class) - as.numeric(cl))^2)
 }
 my_df <- data.frame("k_nn" = c(1:10),
           "CV Misclassification Error" = cv_misclass_err,
