@@ -133,10 +133,48 @@ kable_styling(kable(my_df))
 ```
 Based on the CV Misclassification error, I would chooose a model with `k_nn == 1`. I would do the same based on training error. Therefore I would most likely choose that model in practice because it has the lowest training and testing error.
 
+## Tutorial for `my_rf_cv`
+This function runs the dataset through a random-forest cross-validation. This function is set up to work with the `my_penguins` dataset. This version of `my_rf_cv` is set up to predict `body_mass_g` using covariates `bill_length_mm`, `bill_depth_mm`, and `flipper_length_mm`. The function returns the cross-validation mean squared error.
+
+To showcase this function, I will run this functions 30 times per each `k`. I will be using `k` values of 2, 5, and 10. I will then create boxplots to display the cross-validation errors, and create a table of the mean cross-validation error for each `k`, along with the standard deviations.  
 ```{r, eval=FALSE}
+#initialize dataset and remove nas
 library(tidyr)
 data(my_penguins) 
-my_penguins <- drop_na(my_penguins)
-my_rf_cv(2)
-```
+my_data <- drop_na(my_penguins)
 
+#create empty vectors to store cross validation errors
+cv_err_2 <- rep(NA, 30)
+cv_err_5 <- rep(NA, 30)
+cv_err_10 <- rep(NA, 30)
+
+#runs my_rf_cv 30 times per each k value
+for (i in 1:30) {
+  cv_err_2[i] <- my_rf_cv(2)
+  cv_err_5[i] <- my_rf_cv(5)
+  cv_err_10[i] <- my_rf_cv(10)
+}
+#creates dataset out of recorded errors
+error_data_2 <- data.frame(k = "2", error = cv_err_2)
+error_data_5 <- data.frame(k = "5", error = cv_err_5)
+error_data_10 <- data.frame(k = "10", error = cv_err_10)
+plot_data <- rbind(error_data_2, error_data_5, error_data_10)
+#make boxplots
+ggplot(data = plot_data, 
+       aes(x = k, y = error, fill = k)) +
+  geom_boxplot() +
+  theme_bw() +
+  labs(title = "Cross-Validation Mean Squared Error by k value", 
+       x = "k", 
+       y = "CV MSE") +
+  theme(plot.title =
+          element_text(hjust = 0.5))
+#creates dataset for table
+error_stats <- data.frame("Mean CV MSE" =
+                            c(mean(cv_err_2), mean(cv_err_5), mean(cv_err_10)),
+                          "SD of CV MSE" = 
+                            c(sd(cv_err_2), sd(cv_err_5), sd(cv_err_10))
+                         )
+kable_styling(kable(error_stats))
+```
+The boxplots indicate that the cross-validation mean squared errors decrease as `k` increases, with the values varying less as `k` increases. The means and standard deviations confirm this, with both decreasing as `k` increases. Therefore, this indicates that the higher `k` is , `k` being the number of folds, the more accurate the random forest cross-validation is. This makes sense because when there are more folds, `randomForest()` is used to make predictions more. However, the trend shown in the graph and table seems to show diminishing returns for decreasing CV MSE as `k` increases.
