@@ -13,6 +13,12 @@
 #' @importFrom randomForest randomForest
 #' @importFrom stats predict
 #' @importFrom utils data
+#' @importFrom tidyr drop_na
+#'
+#' @examples
+#' data(my_penguins)
+#' my_data <- tidyr::drop_na(my_penguins)
+#' my_rf_cv(2)
 #'
 #' @export
 my_rf_cv <- function(k){

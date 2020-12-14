@@ -16,4 +16,10 @@ A numeric with the cross validation error.
 This function predicts output with cv error based on the number of folds,
 this function works with \code{my_penguins}.
 }
+\examples{
+data(my_penguins)
+my_data <- tidyr::drop_na(my_penguins)
+my_rf_cv(2)
+
+}
 \keyword{prediction}
