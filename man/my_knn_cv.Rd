@@ -22,4 +22,15 @@ a numeric with the cross-validation misclassification error, \code{cv_err}.
 \description{
 This function predicts an output class using the input data's covariates.
 }
+\examples{
+#remove na values
+train <- na.omit(my_penguins)
+#remove unnecessary rows
+train$island <- NULL
+train$sex <- NULL
+train$year <- NULL
+cl <- train$species
+my_knn_cv(train, cl, 1, 5)
+
+}
 \keyword{prediction}

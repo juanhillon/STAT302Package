@@ -11,6 +11,15 @@
 #' @return A list containing a vector of the predicted class \code{class} and
 #'   a numeric with the cross-validation misclassification error, \code{cv_err}.
 #'
+#' @examples
+#' #remove na values
+#' train <- na.omit(my_penguins)
+#' #remove unnecessary rows
+#' train$island <- NULL
+#' train$sex <- NULL
+#' train$year <- NULL
+#' cl <- train$species
+#' my_knn_cv(train, cl, 1, 5)
 #'
 #' @importFrom class knn
 #' @importFrom stats na.omit
