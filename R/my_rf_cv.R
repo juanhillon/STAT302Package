@@ -22,6 +22,8 @@
 #'
 #' @export
 my_rf_cv <- function(k){
+  my_penguins <- STAT302Package::my_penguins
+  my_data <- tidyr::drop_na(my_penguins)
   #creates vector to store cross validation errors
   cv_errors_2 <- rep(NA, k)
   #gives each observation a fold
@@ -32,7 +34,7 @@ my_rf_cv <- function(k){
     data_train <- my_data %>% dplyr::filter(fold != i)
     data_test <- my_data %>% dplyr::filter(fold == i)
     #creates model with randomForest()
-    my_model <- randomForest(
+    my_model <- randomForest::randomForest(
       body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_mm,
       data = data_train,
       ntree = 100
